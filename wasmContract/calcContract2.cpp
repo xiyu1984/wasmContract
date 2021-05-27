@@ -11,7 +11,7 @@ public:
 	{
 		//the owner of the contract is best to be the operator of the deployment
 		//in this instance, owner address can not be changed
-		_ownerAddr.self() = std::pari<platon::Address, bool>(platon::platon_caller(), true);
+		_ownerAddr.self() = std::pair<platon::Address, bool>(platon::platon_caller(), true);
 	}
 
 	//this methods shall be called only after the proxy contract is deployed
