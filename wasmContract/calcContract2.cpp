@@ -28,6 +28,7 @@ public:
 		else
 		{
 			_proxyAddr.self() = p_Addr;
+                        return true;
 		}
 	}
 
@@ -59,7 +60,7 @@ public:
 			return false;
 		}
 
-		auto result = platon::platon_delegate_call_with_return_value(_proxyAddr.self().first, int(0), int(0), "RegisterOwner", paramStr);
+                auto result = platon::platon_call_with_return_value<bool>(_proxyAddr.self().first, (unsigned int)(0), (unsigned int)(0), "RegisterOwner", paramStr);
 		return result.second;
 	}
 

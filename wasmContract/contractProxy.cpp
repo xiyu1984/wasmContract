@@ -53,10 +53,10 @@ public:
 	ACTION std::pair<int, bool> calcAdd(int a, int b)
 	{
 		//can't be called when owner is illegal
-		if (!_contractAddr.self().second)
+                if (!(_contractAddr.self().second))
 		{
 			platon::internal::platon_throw("this contract init failed!");
-			return std::pair<int, false>(0, false);
+                        return std::pair<int, bool>(0, false);
 		}
 
 		//make call to real contract
@@ -64,8 +64,7 @@ public:
 		memset(param, 0, 50);
 		sprintf(param, "[\"&d\", \"&d\"]", a, b);
 
-		auto result = platon_call_with_return_value<int>(_contractAddr.self().first,
-			int(0), int(0), "calcAdd", std::string(param));
+                auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "calcAdd", std::string(param));
 
 		return result;
 	}
@@ -73,10 +72,10 @@ public:
 	ACTION std::pair<int, bool> makeSum(std::vector<int>& eles)
 	{
 		//can't be called when owner is illegal
-		if (!_contractAddr.self().second)
+                if (!(_contractAddr.self().second))
 		{
 			platon::internal::platon_throw("this contract init failed!");
-			return std::pair<int, false>(0, false);
+                        return std::pair<int, bool>(0, false);
 		}
 
 		//make call to real contract
@@ -109,15 +108,14 @@ public:
 			paramStr += "]";
 
 			//call methods
-			auto result = platon_call_with_return_value<int>(_contractAddr.self().first,
-				int(0), int(0), "makeSum", paramStr);
+                        auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "makeSum", paramStr);
 
 			return result;
 		}
 	}
 
 private:
-	platon::StorageType<"string"_n, std::pair<Address, bool>>            _contractAddr;
+        platon::StorageType<"contract"_n, std::pair<platon::Address, bool>>            _contractAddr;
 };
 
 PLATON_DISPATCH(calc_contract_proxy, (init)(RegisterContract)(calcAdd)(makeSum))
