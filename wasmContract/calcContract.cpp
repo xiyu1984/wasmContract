@@ -31,6 +31,16 @@ public:
 		}
 	}
 
+        CONST std::string GetProxyAddress()
+        {
+            return _proxyAddr.self().first.toString();
+        }
+
+        CONST std::string GetOwnerAddress()
+        {
+            return _ownerAddr.self().first.toString();
+        }
+
 	//methods for proxy mechanism
 	//the param is the next contract address the proxy really use
 	ACTION bool updateContract(const std::string& contractAddr)
@@ -69,6 +79,11 @@ public:
 		return a + b;
 	}
 
+        CONST int const_calcAdd(int a, int b)
+        {
+                return a + b;
+        }
+
 	ACTION int makeSum(std::vector<int>& eles)
 	{
 		int rst = 0;
@@ -87,4 +102,4 @@ private:
 	platon::StorageType<"proxy"_n, std::pair<platon::Address, bool>>			_proxyAddr;
 };
 
-PLATON_DISPATCH(calc_contract, (init)(RegisterProxy)(updateContract)(calcAdd)(makeSum))
+PLATON_DISPATCH(calc_contract, (init)(RegisterProxy)(GetProxyAddress)(GetOwnerAddress)(updateContract)(calcAdd)(const_calcAdd)(makeSum))

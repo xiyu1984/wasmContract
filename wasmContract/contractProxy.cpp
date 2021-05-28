@@ -5,6 +5,10 @@
 //real contract shall be deployed before this proxy is deployed
 class calc_contract_proxy : platon::Contract{
 public:
+
+        PLATON_EVENT1(incalcAdd, std::string, int)
+        PLATON_EVENT1(inmakeSum, std::string, int)
+
 	//the input param is for Security considerations
 	ACTION void init(std::string& contractAddr)
 	{
@@ -60,14 +64,26 @@ public:
 		}
 
 		//make call to real contract
-		char param[50];
-		memset(param, 0, 50);
-		sprintf(param, "[\"&d\", \"&d\"]", a, b);
-
-                auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "calcAdd", std::string(param));
+                auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "calcAdd", a, b);
+                PLATON_EMIT_EVENT1(incalcAdd, "calcAdd" , result.first);
 
 		return result;
 	}
+
+        CONST std::pair<int, bool> const_calcAdd(int a, int b)
+        {
+            //can't be called when owner is illegal
+            if (!(_contractAddr.self().second))
+            {
+                    platon::internal::platon_throw("this contract init failed!");
+                    return std::pair<int, bool>(0, false);
+            }
+
+            //make call to real contract
+            auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "const_calcAdd", a, b);
+
+            return result;
+        }
 
 	ACTION std::pair<int, bool> makeSum(std::vector<int>& eles)
 	{
@@ -82,34 +98,14 @@ public:
 		unsigned int len = eles.size();
 		if (0 == len)
 		{
+                        PLATON_EMIT_EVENT1(inmakeSum, "makeSum" , 0);
 			return std::pair<int, bool>(0, true);
 		}
 		else
 		{
-			//encode params
-			std::string paramStr("[");
-
-			char eleNumber[20];
-			memset(eleNumber, 0, 20);
-
-			auto itr_ele = eles.begin();
-			sprintf(eleNumber, "%d", *itr_ele);
-			paramStr += std::string(eleNumber);
-			++itr_ele;
-
-			while (itr_ele != eles.end())
-			{
-				memset(eleNumber, 0, 20);
-				sprintf(eleNumber, ", %d", *itr_ele);
-				paramStr += std::string(eleNumber);
-				++itr_ele;
-			}
-
-			paramStr += "]";
-
 			//call methods
-                        auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "makeSum", paramStr);
-
+                        auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "makeSum", eles);
+                        PLATON_EMIT_EVENT1(inmakeSum, "makeSum" , result.first);
 			return result;
 		}
 	}
@@ -118,4 +114,4 @@ private:
         platon::StorageType<"contract"_n, std::pair<platon::Address, bool>>            _contractAddr;
 };
 
-PLATON_DISPATCH(calc_contract_proxy, (init)(RegisterContract)(calcAdd)(makeSum))
+PLATON_DISPATCH(calc_contract_proxy, (init)(RegisterContract)(calcAdd)(const_calcAdd)(makeSum))
