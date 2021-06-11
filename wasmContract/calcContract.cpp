@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-class calc_contract : public platon::Contract
+CONTRACT calc_contract : public platon::Contract
 {
 public:
 	ACTION void init()
@@ -27,19 +27,19 @@ public:
 		else
 		{
 			_proxyAddr.self() = p_Addr;
-                        return true;
+            return true;
 		}
 	}
 
-        CONST std::string GetProxyAddress()
-        {
-            return _proxyAddr.self().first.toString();
-        }
+    CONST std::string GetProxyAddress()
+    {
+        return _proxyAddr.self().first.toString();
+    }
 
-        CONST std::string GetOwnerAddress()
-        {
-            return _ownerAddr.self().first.toString();
-        }
+    CONST std::string GetOwnerAddress()
+    {
+        return _ownerAddr.self().first.toString();
+    }
 
 	//methods for proxy mechanism
 	//the param is the next contract address the proxy really use
@@ -69,7 +69,7 @@ public:
 			return false;
 		}
 
-                auto result = platon::platon_call_with_return_value<bool>(_proxyAddr.self().first, (unsigned int)(0), (unsigned int)(0), "RegisterOwner", paramStr);
+        auto result = platon::platon_call_with_return_value<bool>(_proxyAddr.self().first, (unsigned int)(0), (unsigned int)(0), "RegisterOwner", paramStr);
 		return result.second;
 	}
 
@@ -79,10 +79,10 @@ public:
 		return a + b;
 	}
 
-        CONST int const_calcAdd(int a, int b)
-        {
-                return a + b;
-        }
+    CONST int const_calcAdd(int a, int b)
+    {
+        return a + b;
+    }
 
 	ACTION int makeSum(std::vector<int>& eles)
 	{
