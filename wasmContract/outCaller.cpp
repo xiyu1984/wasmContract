@@ -1,3 +1,5 @@
+#include "dataStruct.h"
+
 #include <platon/platon.hpp>
 #include <string>
 
@@ -34,7 +36,7 @@ public:
 
 	CONST std::string getContract()
 	{
-		_contractAddr.self().first.toString();
+		return _contractAddr.self().first.toString();
 	}
 
 	ACTION int Call()
@@ -42,15 +44,16 @@ public:
 		if (!(_contractAddr.self().second))
 		{
 			platon::internal::platon_throw("this contract init failed!");
-			return std::pair<int, bool>(0, false);
+			return -1;
 		}
 
-		auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "outCall");
-		return result;
+		auto ms = MyStruct();
+		auto result = platon::platon_call_with_return_value<int>(_contractAddr.self().first, (unsigned int)(0), (unsigned int)(0), "outCall", ms);
+		return result.first;
 	}
 
 	platon::StorageType<"contract"_n, std::pair<platon::Address, bool>>            _contractAddr;
 
 };
 
-PLATON_DISPATCH(eventCalled, (init)(Call))
+PLATON_DISPATCH(outCaller, (init)(setContract)(getContract)(Call))

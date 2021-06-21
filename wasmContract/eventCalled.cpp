@@ -1,6 +1,8 @@
 #include <platon/platon.hpp>
 #include <string>
 
+#include "dataStruct.h"
+
 class eventCalled: public platon::Contract
 {
 public:
@@ -11,9 +13,9 @@ public:
 
 	}
 
-	ACTION int outCall()
+	ACTION int outCall(MyStruct& ms)
 	{
-		PLATON_EMIT_EVENT1(outCaller, "outside", 99);
+		PLATON_EMIT_EVENT1(outCaller, "outside", ms.i);
 		return 99;
 	}
 

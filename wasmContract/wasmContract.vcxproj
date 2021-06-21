@@ -142,6 +142,11 @@
     <ClCompile Include="calcContract.cpp" />
     <ClCompile Include="calcContract2.cpp" />
     <ClCompile Include="contractProxy.cpp" />
+    <ClCompile Include="eventCalled.cpp" />
+    <ClCompile Include="outCaller.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dataStruct.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

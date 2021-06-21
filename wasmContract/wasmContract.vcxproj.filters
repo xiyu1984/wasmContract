@@ -24,5 +24,16 @@
     <ClCompile Include="contractProxy.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="eventCalled.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="outCaller.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dataStruct.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
