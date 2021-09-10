@@ -1,12 +1,10 @@
 #include "WasmDataStruct.h"
 
-void WasmDataStruct::init()
-{
+void WasmDataStruct::init(){
 	
 }
 
-void WasmDataStruct::AddUser(const UserDefinedData& udd)
-{
+void WasmDataStruct::AddUser(const UserDefinedData& udd){
 	_mUserMap[udd.uID] = udd;
 	_mUser_Data.self()[udd.uID] = udd;
 
@@ -15,8 +13,7 @@ void WasmDataStruct::AddUser(const UserDefinedData& udd)
 		});
 }
 
-void WasmDataStruct::ModifyUserInfo(const UserDefinedData& udd)
-{
+void WasmDataStruct::ModifyUserInfo(const UserDefinedData& udd){
 	//_mUserMap
 	if (_mUserMap.contains(udd.uID))
 	{
@@ -40,8 +37,7 @@ void WasmDataStruct::ModifyUserInfo(const UserDefinedData& udd)
 	}
 }
 
-void WasmDataStruct::UserErase(const platon::u128& uID)
-{
+void WasmDataStruct::UserErase(const platon::u128& uID){
 	//_mUserMap
 	if (_mUserMap.contains(uID))
 	{
@@ -63,8 +59,7 @@ void WasmDataStruct::UserErase(const platon::u128& uID)
 	}
 }
 
-void WasmDataStruct::Clear()
-{
+void WasmDataStruct::Clear(){
 	//the clear of db::Map and db::MultiIndex are Some trouble
 	std::vector<platon::u128> idVec;
 	for (auto usItr = _mUser_Data.self().begin(); usItr != _mUser_Data.self().end(); ++usItr)
@@ -92,8 +87,7 @@ void WasmDataStruct::Clear()
 	}
 }
 
-std::vector<UserDefinedData> WasmDataStruct::getUserFromTable_ID(const platon::u128& uID)
-{
+std::vector<UserDefinedData> WasmDataStruct::getUserFromTable_ID(const platon::u128& uID){
 	std::vector<UserDefinedData> udVec;
 
 	auto uTableItr = _mUser_table.find<"id"_n>(uID);
@@ -107,8 +101,7 @@ std::vector<UserDefinedData> WasmDataStruct::getUserFromTable_ID(const platon::u
 	return udVec;
 }
 
-std::vector<UserDefinedData> WasmDataStruct::getUserFromTable_Name(const std::string& uName)
-{
+std::vector<UserDefinedData> WasmDataStruct::getUserFromTable_Name(const std::string& uName){
 	std::vector<UserDefinedData> udVec;
 	//Here's where it gets more confusing, maybe set parameters in get_index is better
 	auto normalIndexes = _mUser_table.get_index<"name"_n>();
@@ -120,8 +113,7 @@ std::vector<UserDefinedData> WasmDataStruct::getUserFromTable_Name(const std::st
 	return udVec;
 }
 
-std::vector<UserDefinedData> WasmDataStruct::getUserFromMap(const platon::u128& uID)
-{
+std::vector<UserDefinedData> WasmDataStruct::getUserFromMap(const platon::u128& uID){
 	std::vector<UserDefinedData> udVec;
 
 	if (_mUserMap.contains(uID))
@@ -132,8 +124,7 @@ std::vector<UserDefinedData> WasmDataStruct::getUserFromMap(const platon::u128& 
 	return udVec;
 }
 
-std::vector<UserDefinedData> WasmDataStruct::getUserFromStorageType(const platon::u128& uID)
-{
+std::vector<UserDefinedData> WasmDataStruct::getUserFromStorageType(const platon::u128& uID){
 	std::vector<UserDefinedData> udVec;
 
 	auto udItr = _mUser_Data.self().find(uID);
